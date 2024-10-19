@@ -1,8 +1,7 @@
-import App from './App.jsx'
+import LandingPage from './LandingPage.jsx'
 import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
 
 // Import your publishable key
@@ -15,7 +14,7 @@ if (!PUBLISHABLE_KEY) {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-      <App />
+      <LandingPage />
     </ClerkProvider>
   </React.StrictMode>,
 )
