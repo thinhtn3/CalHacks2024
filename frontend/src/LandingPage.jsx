@@ -7,13 +7,13 @@ function LandingPage() {
     <>
       <header>
         <SignedOut>
-          <SignInButton />
+          <SignInButton className="bg-blue-500 text-white p-2 rounded-md"/>
         </SignedOut>
         <SignedIn>
           <UserButton />
         </SignedIn>
       </header>
-      <h1>Yelp, but for music festivals.</h1>
+      <h1 className="text-4xl font-bold">Yelp, but for music festivals.</h1>
     </>
   )
 }
