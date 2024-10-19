@@ -14,9 +14,8 @@ generator client {
 model user {
   id    Int     @id @default(autoincrement())
   email String  @unique
-  name  String
-  age Int 
-  gender String
+  firstName  String
+  lastName String
   artists String[]
   genres String[]
   city String
@@ -28,6 +27,7 @@ model review{
   id    Int     @id @default(autoincrement())
   artist String 
   review String
-  user_id Int
+  firstName String
+  lastName String
   rating Int
 }

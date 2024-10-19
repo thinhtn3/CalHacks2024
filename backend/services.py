@@ -1,6 +1,12 @@
 from models import User,Review
 from db import database
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile
+import os
+
+UPLOAD_FOLDER = 'uploads'  # Specify your upload folder
+
+# Ensure the upload folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 async def insert_user(user: User) -> User:
@@ -70,3 +76,6 @@ async def get_average_rating(artist: str) -> float:
 async def get_all_reviews_by_user(user_id: int) -> list[Review]:
     reviews = await database.review.find_many(where = {"user_id": user_id})
     return reviews  
+
+async def handle_audio_upload(audio_file: bytes) -> str:
+    return "Upload successful"
