@@ -50,22 +50,25 @@ class User:
         self.likedArtist = likedArtist
 
 def quick_sort(arr, user, max_bpm, max_distance):
-    if len(arr) <= 1:
+    if len(arr) <= 0:
         return arr
+    elif (arr) == 1:
+        return [(arr[0], arr[0].ranking_score(user, max_distance, max_prices))]
     else:
         # Select a pivot element (using the last element here for simplicity)
         pivot = arr[-1]
         left = []
         right = []
+        pivot_score = pivot.ranking_score(user, max_distance, max_prices)
         for Concert in arr[:-1]:
-            if Concert.ranking_score(user, max_distance, max_prices) > pivot.ranking_score(user, max_distance, max_prices):
+            if Concert.ranking_score(user, max_distance, max_prices) > pivot_score:
                 left.append(Concert)
             else:
                 right.append(Concert)
             
         
         # Recursively apply quick_sort to 'left' and 'right', and combine with pivot
-        return quick_sort(left, user, max_bpm, max_distance) + [pivot] + quick_sort(right, user, max_bpm, max_distance)
+        return quick_sort(left, user, max_bpm, max_distance) + [(pivot, pivot_score)] + quick_sort(right, user, max_bpm, max_distance)
     
 concert1 = Concert("Rock in Rio", 5, (22.911014, -43.209373), {"Metallica", "Iron Maiden"}, 150)
 concert2 = Concert("Tomorrowland", 5, (51.091526, 4.385689), {"David Guetta", "Calvin Harris"}, 250)
@@ -84,8 +87,15 @@ const_max = max_const(arr, user)
 max_prices = const_max[0]
 max_distance = const_max[1]
 sorted_arr = quick_sort(arr, user, max_prices, max_distance)
-for Concert in sorted_arr:
-    print(Concert)
+highest = sorted_arr[0][1]
+
+final_result = []
+for concert in sorted_arr:
+
+    percentage = concert[1] / highest * 100
+    final_result.append((concert[0], percentage))
+    print(final_result[-1][0])
+    print("Recommendation Rate: " + str(round(final_result[-1][1], 2)) + "%")
 
 
 
