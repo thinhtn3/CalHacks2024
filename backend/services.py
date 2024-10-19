@@ -77,5 +77,5 @@ async def get_all_reviews_by_user(user_id: int) -> list[Review]:
     reviews = await database.review.find_many(where = {"user_id": user_id})
     return reviews  
 
-# async def handle_audio_upload(audio_file: bytes) -> str:
-#     return "Upload successful"
+async def handle_audio_upload(audio_file: bytes) -> str:
+    return "Upload successful"
