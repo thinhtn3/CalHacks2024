@@ -24,7 +24,7 @@ model user {
 }
 
 
-model reviews {
+model review{
   id    Int     @id @default(autoincrement())
   artist String 
   review String
