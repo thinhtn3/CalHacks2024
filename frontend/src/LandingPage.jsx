@@ -1,11 +1,21 @@
 import { useState } from 'react'
 import './LandingPage.css'
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      <header>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </header>
       <h1>Hello World</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
