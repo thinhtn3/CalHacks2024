@@ -16,8 +16,19 @@ class Concert:
         self.artist = artist
         self.prices = random.randint(100, 1000)
         self.imageURL = imageURL
+        self.percentage = -1
+    def to_dict(self):
+        return {
+            'title': self.title,
+            'rating': self.rating,
+            'location': self.location,
+            'artist': [artist['name'] for artist in self.artist],  # Assuming artist data structure is consistent
+            'prices': self.prices,
+            'imageURL': self.imageURL,
+            'percentage': self.percentage
+        }
     def __str__(self):
-        return "{0}".format(self.title)
+        return "{0} Recommendation Percentage {1}".format(self.title, self.percentage)
     def distance_difference(self, user):
         return abs(geodesic(user.location, self.location).kilometers)
     def artist_diffference(self, user):
@@ -30,6 +41,8 @@ class Concert:
         return total - matched
     def prices_difference(self, user):
         return abs(self.prices - user.budget)
+    def assign_percentage(self, percent):
+        self.percentage = percent
     def ranking_score(self, user, max_distance, max_prices):
         return max(self.rating - (self.distance_difference(user) / max_distance) - \
             (self.artist_diffference(user) / len(user.likedArtist)) - \
@@ -94,7 +107,11 @@ def recommendaditon():
         if (count >= 30):
             break
         percentage = concert[1] / highest * 100
-        final_result.append((concert[0], percentage))
+        concert[0].assign_percentage(round(percentage, 1))
+        final_result.append(concert[0])
         count += 1
-    return final_result
+    return json.dumps([concert.to_dict() for concert in final_result])
 
+
+
+recommendaditon()
