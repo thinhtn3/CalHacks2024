@@ -9,7 +9,7 @@ class User(BaseModel):
     state: str
     first_name: str
     last_name: str
-    profile_url: str
+    profile_url: Optional[str]
     user_id: str
 
 class Review(BaseModel):
