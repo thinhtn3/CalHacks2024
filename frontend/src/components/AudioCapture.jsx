@@ -1,5 +1,6 @@
 // frontend/src/AudioCapture.jsx
 import React, { useRef, useState } from 'react';
+import { Button } from "@/components/ui/Button"
 
 const AudioCapture = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -57,18 +58,34 @@ const AudioCapture = () => {
     }
   };
 
+  const handleDownload = () => {
+    if (!audioBlob) return;
+
+    const url = URL.createObjectURL(audioBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'recording.wav'; // Set the desired file name
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url); // Clean up the URL object
+  };
+
   return (
-    <div>
+    <div className="space-x-10">
       <h1>Audio Capture</h1>
-      <button onClick={startRecording} disabled={isRecording}>
+      <Button onClick={startRecording} disabled={isRecording} className='bg-blue-900 w-40 h-11 text-gray-50'>
         Start Recording
-      </button>
-      <button onClick={stopRecording} disabled={!isRecording}>
+      </Button>
+      <Button onClick={stopRecording} disabled={!isRecording} className='bg-blue-900 w-40 h-11 text-gray-50'>
         Stop Recording
-      </button>
-      <button onClick={handleUpload} disabled={!audioBlob}>
+      </Button>
+      <Button onClick={handleUpload} disabled={!audioBlob} className='bg-blue-900 w-40 h-11 text-gray-50'>
         Upload Recording
-      </button>
+      </Button>
+      <Button onClick={handleDownload} disabled={!audioBlob} className='bg-blue-900 w-40 h-11 text-gray-50'>
+        Download Recording
+      </Button>
     </div>
   );
 };
