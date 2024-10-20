@@ -4,7 +4,7 @@ from prisma import Prisma
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload, start_job, get_job_predictions,get_user_info
+from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload, start_job, get_job_predictions,get_user_info,extract_rating
 from models import User,Review
 
 
@@ -65,7 +65,7 @@ async def get_user(user_id: str):
 
 
 @router.post("/audio/upload")
-async def audio_upload(audio_file: UploadFile = File(...)):
+async def audio_upload(artist="slander", user_id = "user_8", audio_file: UploadFile = File(...)):
     file_path = await handle_audio_upload(audio_file)
     print("this is the file path", file_path)
 
@@ -76,8 +76,19 @@ async def audio_upload(audio_file: UploadFile = File(...)):
         #load the predictions and transcript to gemini to correct the transcript and extract a rating based on keywords and emotions
         #extract predictions (text and emotions array)
 
-        rating = await extract_rating(predictions)
-        
+        review, rating = await extract_rating(predictions)
+        print("this is the rating from the audio", rating)
+        print("transcript from audio", review)
+        int_rating = int(rating)
+        print("INT RATING", type(int_rating))
+        if isinstance(int_rating, int):  # Ensure int_rating is an integer
+            review_instance = Review(artist=artist, review=review, rating=int_rating, user_id=user_id)
+            #add to the database for the review 
+            res = await insert_review(review_instance)
+            if res:
+                return review,int_rating
+            else:
+                return None
     else:
         raise HTTPException(status_code=500, detail="Failed to start job")
 

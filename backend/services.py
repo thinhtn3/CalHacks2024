@@ -62,10 +62,11 @@ async def insert_review(review: Review) -> Review:
     
     response = await database.review.create(
         data = {
-            "artist": review.artist,        
+            "artist": review.artist,  
             "review": review.review,
+            "rating": review.rating,      
             "user_id": review.user_id,
-            "rating": review.rating
+
         }
     )
     return response
@@ -173,6 +174,44 @@ async def get_job_predictions(job_id):
 
 
 async def extract_rating(predictions):
-    text = predictions.get("text")
-    print(text)
-    # response = model.generate_content("Based on this text: ")
+
+    if not predictions:
+        print("No predictions available.")
+        return
+
+    # Access the first prediction object
+    prediction_obj = predictions[0].results.predictions[0]
+
+    # Access the models from the prediction object
+    models = prediction_obj.models
+
+    # Access the prosody attribute
+    prosody = models.prosody
+    grouped_predictions = prosody.grouped_predictions  # This should be a list
+
+    # Initialize an array to hold all emotion scores
+    total_emotions = ""
+    total_text = ""
+    # Iterate over each group in grouped_predictions
+    for group in grouped_predictions:
+        predictions_list = group.predictions  # Access the predictions list
+        print("Predictions:")
+        for pred in predictions_list:
+            total_text += pred.text
+
+            # Extract emotion scores
+            for emotion in pred.emotions:  # Assuming pred.emotions is a list of EmotionScore objects
+                combined = "emotion: " + emotion.name + " " + str(emotion.score) + " "
+                total_emotions += combined
+
+    fix_grammar = f"Based on this text: {total_text}. Make sure that the text is properly formatted and try to adjust the words to your best of your abilities so that the sentence makes sense. Return a SINGLE sentence with your corrections and adjustments"
+    corrected_text = model.generate_content(fix_grammar).text
+    print(corrected_text)
+    # print(total_emotions)
+    # print(total_text)
+    prompt = f"You will be giving a rating from 1-5 based on a user's transcript and their emotion associated with it. Based on this text {corrected_text} identify it's keywords and based on these emotions ${total_emotions} provide a single score from 1-5 on how this user rated the artist. You should return a number that represents their review from 1 through 5 with nothing else attached to it. You shouldn't be giving out that many ratings of 3"
+    response = model.generate_content(prompt).text
+
+    
+
+    return (corrected_text, response)

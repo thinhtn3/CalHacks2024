@@ -17,5 +17,5 @@ class Review(BaseModel):
     artist: str 
     review: str
     rating: int
-    images: List[str]
-    user_id: int
+    images: Optional[list[str]] = None
+    user_id: str
