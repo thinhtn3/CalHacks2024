@@ -41,9 +41,6 @@ async def insert_user(user: User) -> User:
     print("this is the response", response)
     return response
 
-async def fetch_user_firstName(firstName: str) -> User:
-    user = await database.user.find_first(where = {"firstName": firstName})
-    return user
 
 async def check_user_in_db(email: str) -> bool:
     user = await database.user.find_first(where = {"email": email})
@@ -53,6 +50,9 @@ async def get_all_users() -> list[User]:
     users = await database.user.find_many()
     return users    
 
+async def get_user_info(user_id: str) -> User:
+    user = await database.user.find_first(where = {"user_id": user_id})
+    return user
 
 async def insert_review(review: Review) -> Review:
     #makes sure that the user can only do one review per artist 
@@ -75,12 +75,6 @@ async def get_all_reviews(artist: str) -> list[Review]:
     reviews = await database.review.find_many(where = {"artist": artist})
     print(reviews)
     return reviews
-
-async def get_user_info(user_id: str) -> User:
-    user = await database.user.find_many(where = {"user_id": user_id})
-    return user
-
-
 
 async def check_review_in_db(artist: str, user_id: int) -> bool:
     review = await database.review.find_first(where = {"artist": artist, "user_id": user_id})
