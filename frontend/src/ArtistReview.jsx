@@ -1,6 +1,7 @@
 // frontend/src/ContactPage.jsx
-import React, { useState, useEffect } from "react";
-import AudioCapture from "./components/AudioCapture";
+import React from 'react';
+import AudioCapture from './components/AudioCapture';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 import ReviewCard from "./components/ReviewCard";
 import OverallRatingChart from "./components/OverallRatingChart";
@@ -132,27 +133,7 @@ export default function ContactPage({}) {
         className="w-60 h-60"
       />
       <AudioCapture />
-      <OverallRatingChart
-        generateStars={generateStars}
-        oneStar={ratings.oneStar}
-        twoStar={ratings.twoStar}
-        threeStar={ratings.threeStar}
-        fourStar={ratings.fourStar}
-        fiveStar={ratings.fiveStar}
-      />
-      <SignedIn>
-        console.log(user)
-        <ReviewForm  user={user} artist={artist}/>
-      </SignedIn>
 
-      {artistReview &&
-        artistReview.map((review) => (
-          <ReviewCard
-            key={review.id}
-            {...review}
-            generateStars={generateStars}
-          />
-        ))}
     </div>
   );
 }

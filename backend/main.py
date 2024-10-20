@@ -1,7 +1,26 @@
 from fastapi import FastAPI
 from api import endpoints
 from db import connect_db, disconnect_db
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+
+origins = [
+    "http://localhost:5173",  # Replace with your frontend's origin
+
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows specified origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
+
+
 
 @app.on_event("startup")
 async def startup_event():
