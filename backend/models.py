@@ -9,7 +9,7 @@ class User(BaseModel):
     state: str
     first_name: str
     last_name: str
-    profile_url: str
+    profile_url: Optional[str]
     user_id: str
 
 class Review(BaseModel):
@@ -17,5 +17,5 @@ class Review(BaseModel):
     artist: str 
     review: str
     rating: int
-    images: List[str]
-    user_id: int
+    images: Optional[list[str]] = None
+    user_id: str
