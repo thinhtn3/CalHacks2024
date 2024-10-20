@@ -4,7 +4,7 @@ from prisma import Prisma
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload, start_job, get_job_predictions
+from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload, start_job, get_job_predictions,get_user_info
 from models import User,Review
 
 
@@ -57,6 +57,13 @@ async def get_reviews_by_user(user_id: int):
     return await get_all_reviews_by_user(user_id)
 
 
+@router.get("/retrieve/{user_id}")
+async def get_user(user_id: str):
+    print("looking for the user info")
+    return await get_user_info(user_id)
+
+
+
 @router.post("/audio/upload")
 async def audio_upload(audio_file: UploadFile = File(...)):
     file_path = await handle_audio_upload(audio_file)
@@ -73,3 +80,5 @@ async def audio_upload(audio_file: UploadFile = File(...)):
         
     else:
         raise HTTPException(status_code=500, detail="Failed to start job")
+
+

@@ -27,5 +27,5 @@ model review {
   review      String
   rating      Int
   images      String[]
-  user_id     Int 
+  user_id     String
 }

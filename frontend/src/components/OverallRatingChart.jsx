@@ -80,7 +80,8 @@ export default function OverallRatingChart({
         <div className="flex-col justify-center items-center gap-1">
           <p className="font-bold">Overall Rating</p>
           <p>{averageRating} Rating</p>
-          {/* <div key="1"className="flex"> {generateStars(averageRating)}</div> */}
+
+          {typeof generateStars === "function" &&           <div key="1"className="flex"> {generateStars(averageRating)}</div>}
           <p>Total Reviews: {total}</p>
         </div>
         <ChartContainer config={chartConfig} className="w-[500px] h-40">

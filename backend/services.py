@@ -76,6 +76,12 @@ async def get_all_reviews(artist: str) -> list[Review]:
     print(reviews)
     return reviews
 
+async def get_user_info(user_id: str) -> User:
+    user = await database.user.find_many(where = {"user_id": user_id})
+    return user
+
+
+
 async def check_review_in_db(artist: str, user_id: int) -> bool:
     review = await database.review.find_first(where = {"artist": artist, "user_id": user_id})
     return review is not None   
