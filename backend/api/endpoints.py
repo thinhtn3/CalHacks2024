@@ -4,7 +4,7 @@ from prisma import Prisma
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload
+from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload, fetch_user_firstName
 from models import User,Review
 
 router = APIRouter()
@@ -17,6 +17,10 @@ async def add_user(user: User):
 async def check_user_exists(email: str):
     return await check_user_in_db(email)  
 
+#create an api that returns the user's information based on first and last name from the db
+@router.get("/user/fetch/{firstName}")
+async def fetch_users_firstName(firstName: str):
+    return await fetch_user_firstName(firstName)  
 
 @router.get("/user/fetch")
 async def fetch_users():

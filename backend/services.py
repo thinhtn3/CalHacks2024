@@ -29,6 +29,9 @@ async def insert_user(user: User) -> User:
     print("this is the response", response)
     return response
 
+async def fetch_user_firstName(firstName: str) -> User:
+    user = await database.user.find_first(where = {"firstName": firstName})
+    return user
 
 async def check_user_in_db(email: str) -> bool:
     user = await database.user.find_first(where = {"email": email})
