@@ -138,7 +138,7 @@ const AudioCapture = () => {
       </Button>
       <Button onClick={stopRecording} disabled={!isRecording} className='bg-blue-900 w-40 h-11 text-gray-50'>
         Stop Recording
-      </button>
+      </Button>
     </div>
   );
 };

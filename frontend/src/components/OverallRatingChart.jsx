@@ -59,6 +59,7 @@ export default function OverallRatingChart({
   fiveStar,
   generateStars,
 }) {
+  console.log(typeof generateStars)
   const chartData = [
     { rating: "5 Stars", visitors: fiveStar, fill: "#FFD700" }, // Gold
     { rating: "4 Stars", visitors: fourStar, fill: "#C0C0C0" }, // Silver
@@ -79,7 +80,7 @@ export default function OverallRatingChart({
         <div className="flex-col justify-center items-center gap-1">
           <p className="font-bold">Overall Rating</p>
           <p>{averageRating} Rating</p>
-          <div key="1"className="flex"> {generateStars(averageRating)}</div>
+          {/* <div key="1"className="flex"> {generateStars(averageRating)}</div> */}
           <p>Total Reviews: {total}</p>
         </div>
         <ChartContainer config={chartConfig} className="w-[500px] h-40">

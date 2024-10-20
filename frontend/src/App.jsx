@@ -9,7 +9,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/review" element={<ArtistReview />} /> {/* Add the new route */}
+        <Route path="/review/:artist" element={<ArtistReview />} /> {/* Add the new route */}
       </Routes>
     </Router>
   );

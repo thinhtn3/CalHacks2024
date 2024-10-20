@@ -9,14 +9,12 @@ import {
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { FiArrowUp, FiArrowDown } from "react-icons/fi";
-
+//id is automatic incremented
 export default function ReviewCard({
-  id,
   artist,
-  review,
-  firstName,
-  lastName,
+  images,
   rating,
+  review,
   generateStars,
 }) {
   const getRandomNumber = (min, max) => {
@@ -31,18 +29,18 @@ export default function ReviewCard({
     // Capitalize the first and last name
     if (nameParts.length === 0) return "";
 
-    const firstName =
+    const first_name =
       nameParts[0].charAt(0).toUpperCase() +
       nameParts[0].slice(1).toLowerCase();
     // Return the capitalized first and last name
-    return `${firstName}`;
+    return `${first_name}`;
   };
   const stars = generateStars(rating);
   return (
     <Card className="flex flex-col items-start w-auto text-left bg-gray-700">
       <CardHeader>
         <CardTitle className="text-gray-100">
-          {capitalizeName(firstName)} {capitalizeName(lastName)}
+          {/* {capitalizeName(first_name)} {capitalizeName(last_name)} */}
         </CardTitle>
         <CardDescription className="text-gray-100">
           {capitalizeName(artist)}

@@ -19,12 +19,11 @@ import {
 } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 
-// import artistImage from "https://i1.sndcdn.com/avatars-Hw5zE8czK2Yyny7d-XIUjlA-t1080x1080.jpg"
 
-export default function ContactPage({}) {
+export default function ContactPage({ }) {
   const { artist } = useParams();
   const [artistReview, setArtistReview] = useState([]);
-  const [ratings, setRatings] = useState({
+  const [ratings, setratingss] = useState({
     oneStar: 0,
     twoStar: 0,
     threeStar: 0,
@@ -33,7 +32,6 @@ export default function ContactPage({}) {
   });
   const fetchArtistReview = async () => {
     try {
-      console.log(`http://127.0.0.1:8000/review/fetch/${artist}`);
       const response = await axios.get(
         `http://127.0.0.1:8000/review/fetch/${artist}`
       );
@@ -46,10 +44,10 @@ export default function ContactPage({}) {
       console.log(e);
     }
   };
-  const generateStars = (rating) => {
+  const generateStars = (ratings) => {
     const stars = [];
-    const fullStars = Math.floor(rating); // Get the number of full stars
-    const hasHalfStar = rating % 1 !== 0; // Check if there's a half star
+    const fullStars = Math.floor(ratings); // Get the number of full stars
+    const hasHalfStar = ratings % 1 !== 0; // Check if there's a half star
 
     // Add full stars
     for (let i = 0; i < fullStars; i++) {
@@ -83,7 +81,7 @@ export default function ContactPage({}) {
       };
 
       artistReview.forEach((review) => {
-        switch (review.rating) {
+        switch (review.ratings) {
           case 1:
             counts.oneStar += 1;
             break;
@@ -103,7 +101,7 @@ export default function ContactPage({}) {
             break;
         }
       });
-      setRatings(counts);
+      setratingss(counts);
     }
   };
 
@@ -133,7 +131,12 @@ export default function ContactPage({}) {
         className="w-60 h-60"
       />
       <AudioCapture />
-
+      <OverallRatingChart />
+      <ReviewForm />
+      <OverallRatingChart oneStar={ratings.oneStar} twoStar={ratings.twoStar} threeStar={ratings.threeStar} fourStar={ratings.fourStar} fiveStar={ratings.fiveStar} generateStars={generateStars} />
+      {artistReview.map((review) => {
+        return <ReviewCard {...review} generateStars={generateStars} />
+      })}
     </div>
   );
 }
