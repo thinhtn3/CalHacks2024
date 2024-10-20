@@ -1,4 +1,5 @@
 import requests
+import json
 response = requests.get('https://edmtrain.com/api/events?client=40b7a9a1-1336-48bf-9055-de9d1abf9822')
 from geopy.distance import geodesic
 import random
@@ -70,29 +71,30 @@ def quick_sort(arr, user, max_prices, max_distance):
         return sorted_left + [(pivot, pivot_score)] + sorted_right
             
 
+def recommendaditon(): 
+    concerts_json = response.json()["data"]
+    all_concerts = []
+    for concert in concerts_json:
+        if concert["name"] == None:
+            continue
+        venue = concert["venue"]
+        new_c = Concert(concert["name"], (venue["latitude"], venue["longitude"]), concert["artistList"], concert["link"])
+        all_concerts.append(new_c)
 
-concerts_json = response.json()["data"]
-all_concerts = []
-for concert in concerts_json:
-    if concert["name"] == None:
-        continue
-    venue = concert["venue"]
-    new_c = Concert(concert["name"], (venue["latitude"], venue["longitude"]), concert["artistList"], concert["link"])
-    all_concerts.append(new_c)
+    user = User((37.7749, -122.4194), 300, {"Frank & Tony", "Adi", "Tal"})
+    const_max = max_const(all_concerts, user)
+    max_prices = const_max[0]
+    max_distance = const_max[1]
+    sorted_concerts = quick_sort(all_concerts, user, max_prices, max_distance)
 
-user = User((37.7749, -122.4194), 300, {"Frank & Tony", "Adi", "Tal"})
-const_max = max_const(all_concerts, user)
-max_prices = const_max[0]
-max_distance = const_max[1]
-sorted_concerts = quick_sort(all_concerts, user, max_prices, max_distance)
-
-highest = sorted_concerts[0][1]
-final_result = []
-for concert in sorted_concerts:
-    percentage = concert[1] / highest * 100
-    final_result.append((concert[0], percentage))
-    print(final_result[-1][0])
-    print("Recommendation Rate: " + str(round(final_result[-1][1], 2)) + "%")
-
-
+    highest = sorted_concerts[0][1]
+    final_result = []
+    count = 0
+    for concert in sorted_concerts:
+        if (count >= 30):
+            break
+        percentage = concert[1] / highest * 100
+        final_result.append((concert[0], percentage))
+        count += 1
+    return final_result
 
