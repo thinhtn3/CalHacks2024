@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from services import insert_user, check_user_in_db, get_all_users,insert_review,check_review_in_db,get_all_reviews,get_average_rating,get_all_reviews_by_user, handle_audio_upload, fetch_user_firstName
+from core.ranking import recommendaditon
 from models import User,Review
 
 router = APIRouter()
@@ -26,6 +27,11 @@ async def fetch_users_firstName(firstName: str):
 async def fetch_users():
     return await get_all_users()
 
+@router.get("/user/fetch/recommend")
+async def fetch_recommend():
+    print("yyfhfhgf")
+    res = await recommendaditon()
+    print(res)
 
 @router.post("/review/add")
 async def add_review(review: Review):

@@ -84,7 +84,7 @@ def quick_sort(arr, user, max_prices, max_distance):
         return sorted_left + [(pivot, pivot_score)] + sorted_right
             
 
-def recommendaditon(): 
+async def recommendaditon(): 
     concerts_json = response.json()["data"]
     all_concerts = []
     for concert in concerts_json:
@@ -112,6 +112,3 @@ def recommendaditon():
         count += 1
     return json.dumps([concert.to_dict() for concert in final_result])
 
-
-
-recommendaditon()
