@@ -1,6 +1,7 @@
 // frontend/src/ContactPage.jsx
 import React from 'react';
 import AudioCapture from './components/AudioCapture';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 
 export default function ContactPage({artist}) {
@@ -22,11 +23,7 @@ export default function ContactPage({artist}) {
   return (
     <div>
       <AudioCapture />
-      {artistReview && artistReview.map((review) => (
-        <div key={review.id}>
-          <p>{review.review}</p>
-        </div>
-      ))}
+
     </div>
   );
 }

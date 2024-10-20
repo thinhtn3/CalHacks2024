@@ -1,33 +1,31 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL") // Database connection string in environment variables
-}
-
-
 generator client {
   provider             = "prisma-client-py"
+  recursive_type_depth = "5"
   interface            = "asyncio"
-  recursive_type_depth = 5
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 model user {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  firstName  String
-  lastName String
-  artists String[]
-  genres String[]
-  city String
-  state String
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  artists     String[]
+  city        String
+  state       String
+  first_name  String
+  last_name   String
+  profile_url String? 
+  user_id     String
 }
 
-
-model review{
-  id    Int     @id @default(autoincrement())
-  artist String 
-  review String
-  firstName String
-  lastName String
-  rating Int
+model review {
+  id          Int      @id @default(autoincrement())
+  artist      String
+  review      String
+  rating      Int
+  images      String[]
+  user_id     Int 
 }
